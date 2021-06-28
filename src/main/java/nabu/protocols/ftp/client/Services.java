@@ -75,7 +75,12 @@ public class Services {
 		if (client == null) {
 			throw new IllegalStateException("No such ftp connection found");
 		}
-		client.storeFile(name, input);
+		client.setFileType(FTPClient.BINARY_FILE_TYPE);
+		client.setFileTransferMode(FTPClient.STREAM_TRANSFER_MODE);
+		client.enterLocalPassiveMode();
+		if (!client.storeFile(name, input)) {
+			throw new IOException("Could not write file: [" + client.getReplyCode() + "] " + client.getReplyString());
+		}
 	}
 	
 	@WebResult(name = "entries")
