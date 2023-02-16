@@ -3,6 +3,7 @@ package nabu.protocols.ftp.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +34,8 @@ public class Services {
 			@WebParam(name = "host") String host,
 			@WebParam(name = "port") Integer port,
 			@WebParam(name = "username") String username, 
-			@WebParam(name = "password") String password) throws SocketException, IOException {
+			@WebParam(name = "password") String password,
+			@WebParam(name = "controlEncoding") Charset controlEncoding) throws SocketException, IOException {
 		String key = UUID.randomUUID().toString().replace("-", "");
 		
 		FTPClient client = new FTPClient();
@@ -43,6 +45,13 @@ public class Services {
 		FTPTransactionable transactionable = new FTPTransactionable(key, client);
 		executionContext.getTransactionContext().push(transactionId, transactionable);
 
+		if (controlEncoding != null) {
+			client.setControlEncoding(controlEncoding.name());
+		}
+		else {
+			client.setAutodetectUTF8(true);
+		}
+		
 		client.connect(host, port == null ? 21 : port);
 		if (!FTPReply.isPositiveCompletion(client.getReplyCode())) {
 			client.disconnect();
