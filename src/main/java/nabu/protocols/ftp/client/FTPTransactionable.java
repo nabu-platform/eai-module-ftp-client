@@ -2,6 +2,8 @@ package nabu.protocols.ftp.client;
 
 import java.io.IOException;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ public class FTPTransactionable implements Transactionable {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private String id;
 	private FTPClient client;
+	private String host;
+	private int port;
 	private boolean closed;
 
 	public FTPTransactionable(String id, FTPClient client) {
@@ -70,12 +74,37 @@ public class FTPTransactionable implements Transactionable {
 		}		
 	}
 
+	@XmlTransient
 	public FTPClient getClient() {
 		return client;
 	}
 
 	public boolean isClosed() {
 		return closed;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
 	}
 
 }
