@@ -24,9 +24,6 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPFileFilter;
 import org.apache.commons.net.ftp.FTPReply;
 
-import com.jcraft.jsch.SftpException;
-
-import be.nabu.libs.resources.URIUtils;
 import be.nabu.libs.resources.api.Resource;
 import be.nabu.libs.resources.api.ResourceProperties;
 import be.nabu.libs.resources.impl.ResourcePropertiesImpl;
@@ -135,7 +132,7 @@ public class Services {
 			if (!path.startsWith("/")) {
 				path = "/" + path;
 			}
-			properties.setUri(new URI("ftp", null, transactionable.getHost(), transactionable.getPort(), URIUtils.encodeURI(path), null, null));
+			properties.setUri(new URI("ftp", null, transactionable.getHost(), transactionable.getPort(), path, null, null));
 		}
 		catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -180,7 +177,7 @@ public class Services {
 	}
 	
 	@WebResult(name = "stream")
-	public InputStream read(@WebParam(name = "connectionId") @NotNull String connectionId, @NotNull @WebParam(name = "uri") URI uri) throws IOException, SftpException {
+	public InputStream read(@WebParam(name = "connectionId") @NotNull String connectionId, @NotNull @WebParam(name = "uri") URI uri) throws IOException {
 		if (connectionId == null) {
 			throw new IllegalArgumentException("You must send a valid ftp connection id");
 		}
@@ -192,7 +189,7 @@ public class Services {
 		return new BufferedInputStream(transactionable.getClient().retrieveFileStream(path));
 	}
 	
-	public void delete(@WebParam(name = "connectionId") @NotNull String connectionId, @NotNull @WebParam(name = "uri") URI uri) throws IOException, SftpException {
+	public void delete(@WebParam(name = "connectionId") @NotNull String connectionId, @NotNull @WebParam(name = "uri") URI uri) throws IOException {
 		if (connectionId == null) {
 			throw new IllegalArgumentException("You must send a valid ftp connection id");
 		}
