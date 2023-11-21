@@ -91,8 +91,8 @@ public class Services {
 		if (uri == null) {
 			return "/";
 		}
-		if (uri.getScheme() != null && !"sftp".equalsIgnoreCase(uri.getScheme())) {
-			throw new IllegalArgumentException("Only scheme sftp is supported");
+		if (uri.getScheme() != null && !"ftp".equalsIgnoreCase(uri.getScheme())) {
+			throw new IllegalArgumentException("Only scheme ftp is supported");
 		}
 		if (uri.getHost() != null && !uri.getHost().equalsIgnoreCase(transactionable.getHost())) {
 			throw new IllegalArgumentException("The host of the URI does not match the current connection: " + uri.getHost() + " != " + transactionable.getHost());
